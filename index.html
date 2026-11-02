@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GearWise - Gestion motoculture</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#101410;
+ color:#f4f7f3;
+}
+header{
+ background:#171e18;
+ padding:20px;
+ border-bottom:1px solid #29352a;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
+.logo{font-size:25px;font-weight:bold}
+.logo span{color:#75e64b}
+.badge{color:#75e64b;font-size:12px}
+nav{
+ display:flex;
+ gap:8px;
+ padding:15px;
+ overflow-x:auto;
+ background:#171e18;
+}
+nav button{
+ background:#222c23;
+ color:white;
+ border:0;
+ padding:12px 16px;
+ border-radius:8px;
+ white-space:nowrap;
+ cursor:pointer;
+}
+nav button.active,nav button:hover{
+ background:#75e64b;
+ color:#101410;
+}
+main{padding:20px;max-width:1100px;margin:auto}
+h1{font-size:27px;margin-bottom:5px}
+.subtitle{color:#9aa69a;margin-bottom:25px}
+.cards{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+ gap:15px;
+}
+.card{
+ background:#19221a;
+ border:1px solid #2c3a2d;
+ border-radius:12px;
+ padding:20px;
+}
+.card small{color:#a4b1a4}
+.number{font-size:30px;font-weight:bold;margin-top:12px;color:#75e64b}
+.panel{
+ background:#19221a;
+ border:1px solid #2c3a2d;
+ border-radius:12px;
+ padding:20px;
+ margin-top:22px;
+}
+.panel h2{margin-top:0}
+table{width:100%;border-collapse:collapse}
+th,td{
+ padding:13px 8px;
+ text-align:left;
+ border-bottom:1px solid #303b31;
+}
+th{color:#75e64b}
+button.action{
+ background:#75e64b;
+ color:#101410;
+ border:0;
+ padding:12px 16px;
+ border-radius:8px;
+ font-weight:bold;
+ cursor:pointer;
+}
+.page{display:none}
+.page.active{display:block}
+input,select{
+ width:100%;
+ padding:13px;
+ margin:8px 0 15px;
+ background:#101810;
+ color:white;
+ border:1px solid #39483a;
+ border-radius:7px;
+}
+label{color:#b8c5b8}
+footer{text-align:center;color:#687568;padding:30px}
+@media(max-width:600px){
+ main{padding:14px}
+ h1{font-size:23px}
+ th,td{font-size:13px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">GEAR<span>WISE</span></div>
+ <div class="badge">PROFESSIONAL</div>
+</header>
+
+<nav>
+ <button class="active" onclick="showPage('dashboard',this)">Tableau de bord</button>
+ <button onclick="showPage('clients',this)">Clients</button>
+ <button onclick="showPage('machines',this)">Machines</button>
+ <button onclick="showPage('interventions',this)">Interventions</button>
+ <button onclick="showPage('stock',this)">Stock</button>
+</nav>
+
+<main>
+
+<section id="dashboard" class="page active">
+ <h1>Tableau de bord</h1>
+ <p class="subtitle">Bienvenue sur votre espace GearWise.</p>
+
+ <div class="cards">
+  <div class="card"><small>Clients</small><div class="number" id="clientCount">0</div></div>
+  <div class="card"><small>Machines</small><div class="number">0</div></div>
+  <div class="card"><small>Interventions</small><div class="number" id="jobCount">0</div></div>
+  <div class="card"><small>Chiffre d'affaires</small><div class="number">0 €</div></div>
+ </div>
+
+ <div class="panel">
+  <h2>Bienvenue chez GearWise</h2>
+  <p>Gérez votre activité de motoculture simplement :</p>
+  <p>✓ Suivi des clients et des machines</p>
+  <p>✓ Gestion des réparations</p>
+  <p>✓ Suivi du stock</p>
+  <p>✓ Organisation de votre atelier</p>
+ </div>
+</section>
+
+<section id="clients" class="page">
+ <h1>Clients</h1>
+ <p class="subtitle">Gestion de votre clientèle.</p>
+ <div class="panel">
+  <h2>Ajouter un client</h2>
+  <form onsubmit="addClient(event)">
+   <label>Nom du client</label>
+   <input id="clientName" required placeholder="Ex : Jean Dupont">
+   <label>Téléphone</label>
+   <input id="clientPhone" placeholder="06...">
+   <button class="action">Ajouter le client</button>
+  </form>
+ </div>
+ <div class="panel">
+  <h2>Liste des clients</h2>
+  <div id="clientList">Aucun client enregistré.</div>
+ </div>
+</section>
+
+<section id="machines" class="page">
+ <h1>Machines</h1>
+ <p class="subtitle">Suivez les équipements de vos clients.</p>
+ <div class="panel">
+  <h2>Parc machines</h2>
+  <p>La gestion des machines sera développée dans la prochaine version.</p>
+ </div>
+</section>
+
+<section id="interventions" class="page">
+ <h1>Interventions</h1>
+ <p class="subtitle">Suivez les réparations de votre atelier.</p>
+ <div class="panel">
+  <h2>Nouvelle intervention</h2>
+  <form onsubmit="addJob(event)">
+   <label>Nom du client</label>
+   <input id="jobClient" required placeholder="Nom du client">
+   <label>Machine</label>
+   <input id="jobMachine" required placeholder="Ex : Tondeuse Honda">
+   <label>Réparation à effectuer</label>
+   <input id="jobDescription" required placeholder="Ex : Révision moteur">
+   <button class="action">Créer l'intervention</button>
+  </form>
+ </div>
+ <div class="panel">
+  <h2>Interventions enregistrées</h2>
+  <div id="jobList">Aucune intervention enregistrée.</div>
+ </div>
+</section>
+
+<section id="stock" class="page">
+ <h1>Stock</h1>
+ <p class="subtitle">Gestion des pièces détachées.</p>
+ <div class="panel">
+  <h2>Stock atelier</h2>
+  <p>Le suivi des pièces et des quantités sera ajouté dans une prochaine version.</p>
+ </div>
+</section>
+
+</main>
+
+<footer>GEARWISE © 2026 — Gestion professionnelle motoculture</footer>
+
+<script>
+let clients=[];
+let jobs=[];
+
+function showPage(id,button){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ button.classList.add('active');
+}
+
+function addClient(event){
+ event.preventDefault();
+ clients.push({
+  name:document.getElementById('clientName').value,
+  phone:document.getElementById('clientPhone').value
+ });
+ document.getElementById('clientList').innerHTML=clients.map(c=>
+  `<p><strong>${escapeHTML(c.name)}</strong> — ${escapeHTML(c.phone)}</p>`
+ ).join('');
+ document.getElementById('clientCount').textContent=clients.length;
+ event.target.reset();
+}
+
+function addJob(event){
+ event.preventDefault();
+ jobs.push({
+  client:document.getElementById('jobClient').value,
+  machine:document.getElementById('jobMachine').value,
+  description:document.getElementById('jobDescription').value
+ });
+ document.getElementById('jobList').innerHTML=jobs.map(j=>
+  `<p><strong>${escapeHTML(j.machine)}</strong><br>${escapeHTML(j.client)} — ${escapeHTML(j.description)}</p>`
+ ).join('');
+ document.getElementById('jobCount').textContent=jobs.length;
+ event.target.reset();
+}
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,c=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ }[c]));
+}
+</script>
+
+</body>
+</html>
